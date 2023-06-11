@@ -1,7 +1,8 @@
 import "./globals.css";
 import { Kumbh_Sans } from "next/font/google";
+import Navbar from "@/components/navigation/Navbar";
 
-const kumbhSans = Kumbh_Sans({ subsets: ["latin"] });
+const kumbhSans = Kumbh_Sans({ subsets: ["latin"], weight: ["400", "500", "700"]});
 
 export const metadata = {
   title: "METZINGER Official Site | Luxury Fashion And More",
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={kumbhSans.className}>{children}</body>
+      <body className={kumbhSans.className}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
