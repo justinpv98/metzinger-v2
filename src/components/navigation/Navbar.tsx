@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+// Types
+import { Category } from "@/constants/categories";
+
 // Constants
 import navCategories from "@/constants/categories";
 
@@ -32,7 +35,7 @@ export default function Navbar({}: Props) {
 
     const target = e.target as HTMLLinkElement;
     const hasItems = target.getAttribute("data-haschildren") === "true";
-    const level = target.getAttribute("data-level")
+    const level = target.getAttribute("data-level");
     const category = target.textContent || "";
 
     level == "1" && setCurrentCategory(category);
@@ -48,88 +51,87 @@ export default function Navbar({}: Props) {
     }
   }
 
-  /* Render function separated into two for readability purposes */
-
-  function renderCategories(
-    categories: typeof navCategories,
-    previousPath = "",
+  function renderSubcategories(
+    subcategory: Category,
+    pathName = "",
     level = 1
   ) {
+    if (level == 1) {
+      return (
+        <div
+          className={`
+        ${level == 1 ? "lg:border-b-[1px] lg:border-gray-200 " : "lg:static bg-transparent h-auto "
+        }
+        fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:p-4 lg:hover:block lg:group-hover:block lg:focus-within:block lg:group-focus-within:block lg:border-b-[1px] lg:border-gray-200`}
+        >
+          <div className="lg:flex lg:max-w-6xl lg:h-full lg:mx-auto">
+            <ul
+              className={`flex flex-col divide-y lg:flex-wrap lg:flex-1 lg:gap-y-7 lg:h-full lg:mt-auto lg:divide-none`}
+            >
+              {render(subcategory.items as Category[], pathName, level + 1)}
+            </ul>
+            {level == 1 && subcategory.imageURL && isDesktop && (
+              <Image
+                src={subcategory.imageURL}
+                width={420}
+                height={236}
+                className="object-cover"
+                alt=""
+              />
+            )}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:hover:block lg:group-hover:block lg:group-focus-within:block lg:static bg-transparent h-auto">
+          <ul className="flex flex-col divide-y lg:flex-wrap lg:h-full lg:mt-auto lg:mb-7 lg:max-w-6xl lg:mx-auto lg:divide-none">
+            {render(subcategory.items as Category[], pathName, level + 1)}
+          </ul>
+        </div>
+      );
+    }
+  }
+
+  function render(categories: Category[], previousPath = "", level = 1) {
     return categories.map((category) => {
       const fullPath = previousPath + category.pathname;
       return (
-        <li
-          key={fullPath}
-          className={`group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden lg:px-0 lg:py-0 ${currentCategory == category.name ? "lg:font-bold lg:after:w-full" : "lg:font-medium"}`}
-        >
-          <Link
-            href={fullPath}
-            className="block uppercase tracking-[1px] lg:py-1 lg:text-white"
-            data-haschildren={"items" in category}
-            data-level={level}
-            onClick={onLinkClick}
+        <>
+          <li
+            key={fullPath}
+            className={`
+          ${level == 1 ? `group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden lg:px-0 lg:py-0` : ""} 
+          ${level == 1 && currentCategory == category.name ? "lg:font-bold lg:after:w-full" : "lg:font-medium"}
+          ${level >= 2 ? "top-0 lg:block font-normal px-4 py-3 lg:px-0 lg:py-0": ""}
+          `}
           >
-            {category.name}
-          </Link>
-          {"items" in category &&
-            (history.includes(category.name) || isDesktop) && (
-              <div className="fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:p-4 lg:hover:block lg:group-hover:block lg:focus-within:block lg:group-focus-within:block lg:border-b-[1px] lg:border-gray-200">
-                <div className="lg:flex lg:max-w-[77.5rem] lg:h-full lg:mx-auto">
-                  <ul className="flex flex-col divide-y lg:flex-wrap lg:flex-1 lg:gap-y-7 lg:h-full lg:mt-auto lg:divide-none">
-                    {renderSubcategories(
-                      category.items as typeof navCategories,
-                      fullPath,
-                      level + 1
-                    )}
-                  </ul>
-                 {category.imageURL && isDesktop && <Image src={category.imageURL} width={420} height={236} className="object-cover" alt="" />}
-                </div>
-              </div>
-            )}
-        </li>
-      );
-    });
-  }
-
-  function renderSubcategories(
-    subcategories: typeof navCategories,
-    previousPath = "",
-    level = 2
-  ) {
-    return subcategories.map((subcategory) => {
-      const fullPath = previousPath + subcategory.pathname;
-      return (
-        <li
-          key={fullPath}
-          className="top-0 lg:block font-normal px-4 py-3 lg:px-0 lg:py-0"
-        >
-          <Link
-            href={fullPath}
-            className={`block uppercase tracking-[1px] lg:py-1 ${
-              level === 2 ? "lg:font-bold" : "lg:normal-case lg:hover:text-gray-700"
-            }`}
-            data-haschildren={"items" in subcategory}
-            data-level={level}
-            onClick={onLinkClick}
-          >
-            {subcategory.name}
-          </Link>
-          {"items" in subcategory &&
-            (history.includes(subcategory.name) || isDesktop) && (
-              <div className="fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:hover:block lg:group-hover:block lg:group-focus-within:block lg:static bg-transparent h-auto">
-                <ul className="flex flex-col divide-y lg:flex-wrap lg:h-full lg:mt-auto lg:mb-7 lg:max-w-[77.5rem] lg:mx-auto lg:divide-none">
-                  {renderSubcategories(subcategory.items as typeof subcategories, fullPath, level + 1)}
-                </ul>
-              </div>
-            )}
-        </li>
+            <Link
+              href={fullPath}
+              className={`
+            block uppercase tracking-[1px] lg:py-1 
+            ${level === 1 ? "lg:text-white ": ""}
+            ${level === 2 ? "lg:font-bold ": ""}
+            ${level > 2 ? "lg:normal-case lg:hover:text-gray-700" : ""}
+            `}
+              data-haschildren={"items" in category}
+              data-level={level}
+              onClick={onLinkClick}
+            >
+              {category.name}
+            </Link>
+            {"items" in category &&
+              (history.includes(category.name) || isDesktop) &&
+              renderSubcategories(category, fullPath, level)}
+          </li>
+        </>
       );
     });
   }
 
   return (
     <div className="fixed top-0 z-[10] w-full max-h-16 py-4 lg:max-h-[5.625rem] lg:h-full bg-black">
-      <div className="flex justify-between lg:mb-4  xl:max-w-[77.5rem] xl:mx-auto">
+      <div className="flex justify-between lg:mb-4  xl:max-w-6xl xl:mx-auto">
         <div className="relative w-[15%]">
           <Button
             className="absolute -top-3 lg:hidden"
@@ -212,7 +214,7 @@ export default function Navbar({}: Props) {
           <ul
             className={`flex flex-col lg:gap-4 divide-y lg:flex lg:flex-row lg:justify-center lg:divide-none`}
           >
-            {renderCategories(navCategories)}
+            {render(navCategories)}
           </ul>
         </nav>
       </div>
