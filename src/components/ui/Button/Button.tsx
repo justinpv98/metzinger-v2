@@ -13,7 +13,7 @@ export const buttonStyles = cva(
       },
       icon: {
         true: "bg-transparent w-11 h-11",
-        false: "px-[2em] py-[1em]"
+        false: "px-[2em] py-[1em]",
       },
       intent: {
         primary: "bg-black text-white",
@@ -23,11 +23,18 @@ export const buttonStyles = cva(
         secondaryAlt:
           "bg-transparent text-white border border-white hover:bg-white hover:text-black",
       },
+      rounded: {
+        true: "rounded-full px-[.5em] py-[.5em]"
+      }
     },
     defaultVariants: {
-      intent: "primary",
-      icon: false
+      intent: "primary"
     },
+    compoundVariants: [{
+      intent: "primary",
+      rounded: true,
+      className:"w-12 h-12 px-0 py-0"
+    }]
   }
 );
 
@@ -47,6 +54,7 @@ export default function Button({
   fluid,
   intent,
   icon,
+  rounded,
   onClick,
   ...rest
 }: Props) {
@@ -54,7 +62,7 @@ export default function Button({
     <button
       onClick={onClick}
       {...rest}
-      className={buttonStyles({ intent, icon, disabled, fluid, className })}
+      className={buttonStyles({ intent, icon, disabled, fluid, rounded, className })}
     >
       {children}
     </button>

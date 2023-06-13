@@ -25,6 +25,7 @@ export default function Home() {
               intent="primaryAlt"
               href="/women"
               className="self-center lg:self-start"
+              icon={false}
             >
               Shop Women
             </Link>
@@ -45,6 +46,7 @@ export default function Home() {
             intent="primaryAlt"
             href="/men"
             className="self-center lg:self-start"
+            icon={false}
           >
             Shop Men
           </Link>
@@ -55,7 +57,10 @@ export default function Home() {
         <div></div>
       </section>
       <section className="flex flex-col max-w-7xl mx-auto lg:flex-row text-white">
-       <NextLink href="/men" className="group relative flex flex-col text-center justify-end basis-1/2 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black">
+        <NextLink
+          href="/men"
+          className="group relative flex flex-col text-center justify-end basis-1/2 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black"
+        >
           <Image
             fill
             src="/images/home/shopmenlg.webp"
@@ -72,17 +77,20 @@ export default function Home() {
               Shop
             </Text>
             <Text
-            size="700"
-            weight="bold"
-            uppercase
+              size="700"
+              weight="bold"
+              uppercase
               className="leading-none tracking-[1px]"
             >
               Men's Apparel
             </Text>
           </div>
         </NextLink>
-        <NextLink href="/women" className="group relative flex flex-col text-center justify-end basis-1/4 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black">
-        <Image
+        <NextLink
+          href="/women"
+          className="group relative flex flex-col text-center justify-end basis-1/4 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black"
+        >
+          <Image
             fill
             src="/images/home/shopwomenlg.webp"
             alt=""
@@ -98,17 +106,20 @@ export default function Home() {
               Shop
             </Text>
             <Text
-            size="700"
-            weight="bold"
-            uppercase
+              size="700"
+              weight="bold"
+              uppercase
               className="leading-none tracking-[1px]"
             >
               Women's Apparel
             </Text>
           </div>
         </NextLink>
-        <NextLink href="/women" className="group relative flex flex-col text-center justify-end basis-1/4 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black">
-        <Image
+        <NextLink
+          href="/women"
+          className="group relative flex flex-col text-center justify-end basis-1/4 min-h-[25rem] overflow-hidden lg:text-left after:absolute after:content-[''] after:z-[0] after:top-0 after:left-0 after:w-full after:h-full after:opacity-[.85] after:bg-gradient-to-b after:from-transparent after:from-67% after:to-black"
+        >
+          <Image
             fill
             src="/images/home/accessories.webp"
             alt=""
@@ -124,9 +135,9 @@ export default function Home() {
               Shop
             </Text>
             <Text
-            size="700"
-            weight="bold"
-            uppercase
+              size="700"
+              weight="bold"
+              uppercase
               className="leading-none tracking-[1px]"
             >
               Accessories
@@ -134,23 +145,27 @@ export default function Home() {
           </div>
         </NextLink>
       </section>
-      <section className="flex flex-col items-center max-w-7xl mx-auto lg:flex-row lg:items-start">
-        <div className="py-4 pl-4 pr-4 text-center lg:basis-1/2 lg:py-8 lg:pl-16 lg:pr-0 lg:text-left lg:order-last">
-          <Heading className="mb-6">Metzinger X Soissons</Heading>
-          <Text size="500" className="mb-9 max-w-[55ch]">
-            A collaboration that pays homage to the an artistic legend, taking
-            influences from his stunning neo-baroque architecture.
-          </Text>
-          <Link intent="primary" href="/women">
-            Shop Women
-          </Link>
+      <section className="flex flex-col items-center max-w-7xl min-h-[20rem] mx-auto lg:flex-row lg:items-start">
+        <div className="py-4 pl-4 pr-4 h-full text-center lg:flex lg:justify-center lg:items-center lg:self-center lg:basis-1/2 lg:pl-16 lg:pr-0 lg:text-left lg:order-last">
+          <div>
+            <Heading className="mb-6" level="large">
+              Metzinger X Soissons
+            </Heading>
+            <Text size="400" className="mb-9 max-w-[55ch]">
+              A collaboration that pays homage to the an artistic legend, taking
+              influences from his stunning neo-baroque architecture.
+            </Text>
+            <Link intent="primary" icon={false} href="/women">
+              Shop Women
+            </Link>
+          </div>
         </div>
         <div className="relative lg:basis-1/2 lg:order-first">
           <Image
             fill
             src="/images/home/collab.webp"
             alt=""
-            className="relative z-[-1] top-0 left-0 object-cover h-full min-h-[25rem] lg:min-h-[17.25rem]"
+            className="relative z-[-1] top-0 left-0 object-cover h-full min-h-[25rem] lg:min-h-[20rem]"
           />
         </div>
       </section>

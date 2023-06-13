@@ -19,13 +19,14 @@ export default function Link({
   href,
   icon,
   intent,
+  rounded,
   ...rest
 }: Props) {
   return (
     <NextLink
       href={href}
       {...rest}
-      className={linkStyles({ intent, icon, disabled, fluid, className })}
+      className={linkStyles({ intent, icon, disabled, fluid, rounded, className })}
     >
       {children}
     </NextLink>
