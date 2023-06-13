@@ -12,7 +12,7 @@ export default function Footer({}: Props) {
   return (
     <footer className="pt-0 border-t border-gray-200 font-sm">
       <div className="grid grid-cols-[repeat(auto-fit,_minmax(7.25rem,_20rem))] gap-6 max-w-7xl mx-auto px-6 py-4 md:py-8 lg:grid-cols-[repeat(4,_1fr)] lg:gap-4 lg:justify-between lg:px-16 ">
-        <div>
+        <section>
           <Heading level="small" as="h3" className="mb-2">
             Subscribe to our Newsletter
           </Heading>
@@ -21,8 +21,8 @@ export default function Footer({}: Props) {
             Metzinger events and collections.
           </Text>
           <FooterInput id="email" label="Email Address" />
-        </div>
-        <div>
+        </section>
+        <section>
           <Heading level="small" as="h3" className="mb-2">
             Customer Service
           </Heading>
@@ -55,8 +55,8 @@ export default function Footer({}: Props) {
               </NextLink>
             </li>
           </ul>
-        </div>
-        <div>
+        </section>
+        <section>
           <Heading level="small" as="h3" className="mb-2">
             About Us
           </Heading>
@@ -107,8 +107,8 @@ export default function Footer({}: Props) {
               </NextLink>
             </li>
           </ul>
-        </div>
-        <div>
+        </section>
+        <section>
           <div className="mb-4">
             <Heading level="small" as="h3" className="">
               Find a Store
@@ -176,9 +176,9 @@ export default function Footer({}: Props) {
               </li>
             </ul>
           </div>
-        </div>
+        </section>
       </div>
-      <div className=" mt-4 py-2 border-t border-gray-200">
+      <section className=" mt-4 py-2 border-t border-gray-200">
         <div className="px-6 lg:px-16 lg:max-w-7xl lg:mx-auto xl:px-auto">
           <small className="text-xs">
             &copy; 2022 - 2023 Metzinger. &nbsp;
@@ -193,7 +193,7 @@ export default function Footer({}: Props) {
             </NextLink>
           </address>
         </div>
-      </div>
+      </section>
     </footer>
   );
 }
