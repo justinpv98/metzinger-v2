@@ -131,7 +131,7 @@ export default function Navbar({}: Props) {
   }
 
   return (
-    <div className={`fixed ${showNav ? "top-0" : "-top-16"} z-[10] w-full max-h-16 py-4 transition-[top_background-color] ease-in-out duration-200 focus-within:bg-black focus-within:top-0 hover:bg-black hover:top-0 lg:max-h-[5.625rem] lg:h-full ${navTransparent ? "bg-transparent" : "bg-black"}`}>
+    <div className={`fixed ${showNav ? "top-0" : "-top-28"} z-[10] w-full max-h-16 py-4 transition-[top_background-color] ease-in-out duration-300 focus-within:bg-black focus-within:top-0 hover:bg-black hover:top-0 lg:max-h-[5.625rem] lg:h-full ${navTransparent ? "bg-transparent" : "bg-black"}`}>
       <div className="flex justify-between lg:mb-4  xl:max-w-6xl xl:mx-auto">
         <div className="relative w-[15%]">
           <Button
