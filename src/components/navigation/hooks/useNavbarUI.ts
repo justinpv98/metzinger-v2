@@ -22,7 +22,7 @@ export default function useNavbarUI() {
     if (scrollPosition == 0 && pathname === "/") {
       setNavTransparent(true);
       setShowNav(true);
-    } else if (scrollPosition > previousScrollPosition) {
+    } else if (scrollPosition < previousScrollPosition) {
       setShowNav(true);
       setNavTransparent(false);
     } else {
