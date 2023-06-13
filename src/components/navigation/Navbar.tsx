@@ -97,7 +97,6 @@ export default function Navbar({}: Props) {
     return categories.map((category) => {
       const fullPath = previousPath + category.pathname;
       return (
-        <>
           <li
             key={fullPath}
             className={`
@@ -124,7 +123,6 @@ export default function Navbar({}: Props) {
               (history.includes(category.name) || isDesktop) &&
               renderSubcategories(category, fullPath, level)}
           </li>
-        </>
       );
     });
   }

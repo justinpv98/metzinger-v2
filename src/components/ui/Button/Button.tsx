@@ -1,7 +1,7 @@
 import React from "react";
 import { cva, VariantProps } from "class-variance-authority";
 
-const buttonStyles = cva(
+export const buttonStyles = cva(
   "inline-flex justify-center items-center transition-colors ease-in-out duration-2000 font-sans font-bold text-sm uppercase tracking-[.075em]",
   {
     variants: {
@@ -31,7 +31,7 @@ const buttonStyles = cva(
   }
 );
 
-type ButtonProps = {
+export type ButtonProps = {
   [key: string]: any;
   children?: React.ReactNode;
   className?: string;
