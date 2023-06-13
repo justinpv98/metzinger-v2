@@ -10,8 +10,13 @@ const headingStyles = cva("font-sans font-bold uppercase tracking-[1px]", {
       h4: "text-2xl",
       h5: "text-xl",
       h6: "text-base",
+      large: "1.75rem",
+      small: "text-sm"
     },
   },
+  defaultVariants: {
+    level: "h2"
+  }
 });
 
 type HeadingProps = {
@@ -27,21 +32,21 @@ export default function Heading({
   as = "h2",
   children,
   className,
-  level = "h2",
+  level,
   ...rest
 }: Props) {
   switch (as) {
     case "h2":
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h2 className={headingStyles({level, className})} {...rest}>{children}</h2>;
     case "h3":
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h3 className={headingStyles({level, className})} {...rest}>{children}</h3>;
     case "h4":
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h4 className={headingStyles({level, className})} {...rest}>{children}</h4>;
     case "h5":
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h5 className={headingStyles({level, className})} {...rest}>{children}</h5>;
     case "h6":
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h6 className={headingStyles({level, className})} {...rest}>{children}</h6>;
     default:
-      return <h2 className={headingStyles({level, className})}>{children}</h2>;
+      return <h2 className={headingStyles({level, className})} {...rest}>{children}</h2>;
   }
 }
