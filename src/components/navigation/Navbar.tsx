@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ import navCategories from "@/constants/categories";
 
 // Hooks
 import { useMediaQuery } from "@mantine/hooks";
+import useNavbarUI from "./hooks/useNavbarUI";
 
 // Components
 import { ArrowLeft, Menu, Search, ShoppingBag, User, X } from "react-feather";
@@ -25,6 +26,8 @@ export default function Navbar({}: Props) {
   const [history, setHistory] = useState<String[]>([]);
   const [currentCategory, setCurrentCategory] = useState("");
   const router = useRouter();
+
+  const {showNav, navTransparent} = useNavbarUI();
 
   const isDesktop = useMediaQuery("(min-width: 1024px)", true, {
     getInitialValueInEffect: false,
@@ -100,7 +103,7 @@ export default function Navbar({}: Props) {
           <li
             key={fullPath}
             className={`
-          ${level == 1 ? `group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden lg:px-0 lg:py-0` : ""} 
+          ${level == 1 ? `group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden  lg:px-0 lg:py-0` : ""} 
           ${level == 1 && currentCategory == category.name ? "lg:font-bold lg:after:w-full" : "lg:font-medium"}
           ${level >= 2 ? "top-0 lg:block font-normal px-4 py-3 lg:px-0 lg:py-0": ""}
           `}
@@ -128,7 +131,7 @@ export default function Navbar({}: Props) {
   }
 
   return (
-    <div className="fixed top-0 z-[10] w-full max-h-16 py-4 lg:max-h-[5.625rem] lg:h-full bg-black">
+    <div className={`fixed ${showNav ? "top-0" : "-top-16"} z-[10] w-full max-h-16 py-4 transition-[top_background-color] ease-in-out duration-200 focus-within:bg-black focus-within:top-0 hover:bg-black hover:top-0 lg:max-h-[5.625rem] lg:h-full ${navTransparent ? "bg-transparent" : "bg-black"}`}>
       <div className="flex justify-between lg:mb-4  xl:max-w-6xl xl:mx-auto">
         <div className="relative w-[15%]">
           <Button
@@ -210,7 +213,7 @@ export default function Navbar({}: Props) {
             </Button>
           </div>
           <ul
-            className={`flex flex-col lg:gap-4 divide-y lg:flex lg:flex-row lg:justify-center lg:divide-none`}
+            className={`flex flex-col divide-y lg:flex lg:flex-row lg:gap-4 lg:justify-center lg:divide-none`}
           >
             {render(navCategories)}
           </ul>

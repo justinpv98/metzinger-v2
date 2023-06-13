@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <main className="relative">
       <section className="relative flex flex-col max-w-7xl lg:flex-row lg:h-[45rem] lg:max-h-screen lg:mx-auto">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black from-[-3%] to-transparent to-[19%]" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black from-[-1%] to-transparent to-[20%]" />
         <div className="relative flex flex-col basis-1/2 justify-end min-h-[40rem] pl-4 pb-8 items-center text-white md:pb-24 lg:items-start lg:min-h-0 2xl:pl-[9.25rem]">
           <Image
             src="/images/home/heroimage.webp"
