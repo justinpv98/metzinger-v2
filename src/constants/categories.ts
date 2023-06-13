@@ -1,3 +1,10 @@
+export type Category = {
+  pathname: string,
+  name: string,
+  imageURL?: string;
+  items?: Category[];
+}
+
 const categories = [
   {
     pathname: "/gifts",

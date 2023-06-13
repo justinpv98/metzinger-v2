@@ -15,6 +15,7 @@ const textStyles = cva("font-sans", {
       "400": "text-base",
       "500": "text-lg",
       "600": "text-xl",
+      "700": "text-2xl"
     },
     weight: {
       normal: "font-normal",
@@ -24,6 +25,9 @@ const textStyles = cva("font-sans", {
     underline: {
       true: "underline",
     },
+    uppercase: {
+      true: "uppercase"
+    }
   },
   defaultVariants: {
     size: "400",
@@ -46,12 +50,13 @@ export default function Text({
   italic,
   size,
   underline,
+  uppercase,
   weight,
   ...rest
 }: Props) {
   return (
     <p
-      className={textStyles({ inline, italic, size, underline, weight, className })}
+      className={textStyles({ inline, italic, size, underline, uppercase, weight, className })}
       {...rest}
     >
       {children}

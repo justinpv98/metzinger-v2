@@ -48,6 +48,15 @@ export const Text600: Story = {
     }
 }
 
+
+export const Text700: Story = {
+    args: {
+        ...Text200.args,
+        size: "700"
+    }
+}
+
+
 export const Bold: Story = {
     args: {
         ...Text400.args,

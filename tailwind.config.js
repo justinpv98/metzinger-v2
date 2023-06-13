@@ -17,6 +17,10 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Kumbh Sans", ...defaultTheme.fontFamily.sans]
+      },
+      maxWidth: {
+        '6xl': "77.5rem",
+        '7xl': "96rem"
       }
     },
   },
