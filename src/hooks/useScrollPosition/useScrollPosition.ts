@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
+import { throttle } from "@/utils/functionUtils";
 const useScrollPosition = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
+
+  function updatePosition() {
+    setScrollPosition(window.pageYOffset);
+  };
+
+  const throttledUpdatePosition = useCallback(throttle(updatePosition), [])
+
   useEffect(() => {
-    const updatePosition = () => {
-      setScrollPosition(window.pageYOffset);
-    };
-    window.addEventListener("scroll", updatePosition);
-    updatePosition();
-    return () => window.removeEventListener("scroll", updatePosition);
+    window.addEventListener("scroll", throttledUpdatePosition);
+    
+    return () => window.removeEventListener("scroll", throttledUpdatePosition);
   }, []);
 
   return scrollPosition;

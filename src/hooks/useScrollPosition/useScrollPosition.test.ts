@@ -5,11 +5,13 @@ describe("useScrollPosition", () => {
   let originalScroll: () => void;
 
   beforeAll(() => {
+    jest.useFakeTimers();
     originalScroll = window.scrollTo;
     window.scrollTo = jest.fn();
   });
 
   afterAll(() => {
+    jest.useRealTimers();
     window.scrollTo = originalScroll;
   });
 
@@ -24,6 +26,7 @@ describe("useScrollPosition", () => {
     fireEvent.scroll(window, { target: { pageYOffset: 100 } });
     expect(result.current).toBe(100);
 
+    jest.advanceTimersByTime(201);
     fireEvent.scroll(window, { target: { pageYOffset: 200 } });
     expect(result.current).toBe(200);
   });
