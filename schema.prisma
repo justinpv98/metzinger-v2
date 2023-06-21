@@ -1,0 +1,193 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["jsonProtocol"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    USER
+    ADMIN
+}
+
+enum OrderStatus {
+    PENDING
+    PROCESSING
+    SHIPPED
+    RECEIVED
+    CANCELLED
+}
+
+model User {
+    id         String   @id @default(cuid())
+    email      String
+    username   String
+    password   String
+    role       Role     @default(USER)
+    cartId     Int
+    wishlistId Int
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    cart     Cart     @relation(fields: [cartId], references: [id])
+    order    Order[]
+    wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+
+    @@unique([email, username])
+    @@map("user")
+}
+
+model UserAddress {
+    id        Int    @id @default(autoincrement())
+    userId    String
+    addressId Int
+
+    address Address @relation(fields: [addressId], references: [id])
+
+    @@map("user_address")
+}
+
+model Address {
+    id       Int     @id @default(autoincrement())
+    address1 String
+    address2 String?
+    city     String
+    state    String
+    zipCode  String  @db.VarChar(5)
+
+    userAddress UserAddress[]
+    order       Order[]
+
+    @@map("address")
+}
+
+model Category {
+    id       Int    @id @default(autoincrement())
+    name     String
+    parentId Int?
+
+    parent        Category?  @relation("Subcategories", fields: [parentId], references: [id])
+    subcategories Category[] @relation("Subcategories")
+    product       Product[]
+
+    @@map("category")
+}
+
+model Product {
+    id          Int      @id @default(autoincrement())
+    sku         String   @unique @db.VarChar(10)
+    name        String
+    description String
+    mediaUrls   String[]
+    categoryId  Int
+    price       Float
+    discount    Float    @default(0.0)
+    quantity    Int
+    color       String[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    cartItem         CartItem[]
+    wishlistItem     WishlistItem[]
+    category         Category           @relation(fields: [categoryId], references: [id])
+    orderItem        OrderItem[]
+    productAttribute ProductAttribute[]
+
+    @@map("product")
+}
+
+model ProductAttribute {
+    id          Int @id @default(autoincrement())
+    productId   Int
+    attributeId Int
+
+    product   Product   @relation(fields: [productId], references: [id])
+    attribute Attribute @relation(fields: [attributeId], references: [id])
+
+    @@map("product_attribute")
+}
+
+model Attribute {
+    id    Int    @id @default(autoincrement())
+    color String
+    size  String
+
+    productAttribute ProductAttribute[]
+
+    @@map("attribute")
+}
+
+model Cart {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user     User[]
+    cartItem CartItem[]
+
+    @@map("cart")
+}
+
+model CartItem {
+    id        Int @id @default(autoincrement())
+    cartId    Int
+    productId Int
+    quantity  Int
+
+    cart    Cart    @relation(fields: [cartId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+
+    @@map("cart_item")
+}
+
+model Wishlist {
+    id Int @id @default(autoincrement())
+
+    user         User[]
+    wishlistItem WishlistItem[]
+
+    @@map("wishlist")
+}
+
+model WishlistItem {
+    id         Int @id @default(autoincrement())
+    wishlistId Int
+    productId  Int
+
+    wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+    product  Product  @relation(fields: [productId], references: [id])
+
+    @@map("wishlist_item")
+}
+
+model Order {
+    id                Int         @id @default(autoincrement())
+    userId            String
+    shippingAddressID Int
+    status            OrderStatus
+    total             Float
+    createdAt         DateTime    @default(now())
+    updatedAt         DateTime    @updatedAt
+
+    user            User        @relation(fields: [userId], references: [id])
+    shippingAddress Address     @relation(fields: [shippingAddressID], references: [id])
+    orderItem       OrderItem[]
+
+    @@map("order")
+}
+
+model OrderItem {
+    id        Int   @id @default(autoincrement())
+    orderId   Int
+    productId Int
+    quantity  Int
+    price     Float
+
+    order   Order   @relation(fields: [orderId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+
+    @@map("order_item")
+}
