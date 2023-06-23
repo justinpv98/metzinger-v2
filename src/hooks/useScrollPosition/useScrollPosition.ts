@@ -8,7 +8,7 @@ const useScrollPosition = () => {
     setScrollPosition(window.pageYOffset);
   };
 
-  const throttledUpdatePosition = useCallback(throttle(updatePosition), [])
+  const throttledUpdatePosition = useCallback(throttle(updatePosition, 100), [])
 
   useEffect(() => {
     window.addEventListener("scroll", throttledUpdatePosition);

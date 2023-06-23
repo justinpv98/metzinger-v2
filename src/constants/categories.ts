@@ -1,9 +1,9 @@
 export type Category = {
-  pathname: string,
-  name: string,
+  pathname: string;
+  name: string;
   imageURL?: string;
   items?: Category[];
-}
+};
 
 const categories = [
   {
@@ -41,12 +41,12 @@ const categories = [
             name: "Outerwear",
           },
           {
-            pathname: "/shirts",
-            name: "Shirts",
+            pathname: "/pants",
+            name: "Pants",
           },
           {
-            pathname: "/shorts",
-            name: "Shorts",
+            pathname: "/shirts",
+            name: "Shirts",
           },
           {
             pathname: "/t-shirts",
@@ -132,20 +132,20 @@ const categories = [
         name: "Clothes",
         items: [
           {
-            pathname: "/dresses",
-            name: "Dresses",
+            pathname: "/suits",
+            name: "Suits",
           },
           {
             pathname: "/outerwear",
             name: "Outerwear",
           },
           {
-            pathname: "/shirts",
-            name: "Shirts",
+            pathname: "/pants",
+            name: "Pants",
           },
           {
-            pathname: "/shorts",
-            name: "Shorts",
+            pathname: "/shirts",
+            name: "Shirts",
           },
           {
             pathname: "/t-shirts",

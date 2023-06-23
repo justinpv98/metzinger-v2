@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,8 +11,7 @@ import { Category } from "@/constants/categories";
 import navCategories from "@/constants/categories";
 
 // Hooks
-import { useMediaQuery } from "@mantine/hooks";
-import useNavbarUI from "./hooks/useNavbarUI";
+import useNavbarUI from "../hooks/useNavbarUI";
 
 // Components
 import { ArrowLeft, Menu, Search, ShoppingBag, User, X } from "react-feather";
@@ -22,37 +20,18 @@ import { Button, Heading } from "@/components/ui";
 type Props = {};
 
 export default function Navbar({}: Props) {
-  const [open, setOpen] = useState(false);
-  const [history, setHistory] = useState<String[]>([]);
-  const [currentCategory, setCurrentCategory] = useState("");
-  const router = useRouter();
-
-  const {showNav, navTransparent} = useNavbarUI();
-
-  const isDesktop = useMediaQuery("(min-width: 1024px)", true, {
-    getInitialValueInEffect: false,
-  });
-
-  function onLinkClick(e: React.MouseEvent) {
-    e.preventDefault();
-
-    const target = e.target as HTMLLinkElement;
-    const hasItems = target.getAttribute("data-haschildren") === "true";
-    const level = target.getAttribute("data-level");
-    const category = target.textContent || "";
-
-    level == "1" && setCurrentCategory(category);
-
-    if (hasItems && !isDesktop) {
-      history.length > 0
-        ? setHistory([...history, category])
-        : setHistory([category]);
-    } else {
-      setOpen(false);
-      setHistory([]);
-      router.push(target.href);
-    }
-  }
+  const {
+    clearHistory,
+    currentCategory,
+    history,
+    isDesktop,
+    onLinkClick,
+    openNavbar,
+    popHistory,
+    shouldShowNav,
+    isOpen,
+    isTransparent,
+  } = useNavbarUI();
 
   function renderSubcategories(
     subcategory: Category,
@@ -62,10 +41,11 @@ export default function Navbar({}: Props) {
     if (level == 1) {
       return (
         <div
-          className={`
-        ${level == 1 ? "lg:border-b-[1px] lg:border-gray-200 " : "lg:static bg-transparent h-auto "
-        }
-        fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:p-4 lg:hover:block lg:group-hover:block lg:focus-within:block lg:group-focus-within:block lg:border-b-[1px] lg:border-gray-200`}
+          className={`${
+          level == 1
+            ? "lg:border-b-[1px] lg:border-gray-200 "
+            : "lg:static bg-transparent h-auto"
+        } fixed top-12 left-0 w-full h-full bg-white text-black lg:hidden lg:z-50 lg:top-[5.625rem] lg:max-h-[18rem] lg:p-4 lg:hover:block lg:group-hover:block lg:focus-within:block lg:group-focus-within:block lg:border-b-[1px] lg:border-gray-200`}
         >
           <div className="lg:flex lg:max-w-6xl lg:h-full lg:mx-auto">
             <ul
@@ -100,44 +80,57 @@ export default function Navbar({}: Props) {
     return categories.map((category) => {
       const fullPath = previousPath + category.pathname;
       return (
-          <li
-            key={fullPath}
-            className={`
-          ${level == 1 ? `group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden  lg:px-0 lg:py-0` : ""} 
-          ${level == 1 && currentCategory == category.name ? "lg:font-bold lg:after:w-full" : "lg:font-medium"}
-          ${level >= 2 ? "top-0 lg:block font-normal px-4 py-3 lg:px-0 lg:py-0": ""}
-          `}
+        <li
+          key={fullPath}
+          className={`${
+            level == 1
+              ? `group font-normal px-4 py-3 hover:font-bold lg:relative lg:text-sm lg:pb-7 lg:after:content-[""] lg:after:transition-[width] lg:after:ease-in-out lg:after:duration-200 lg:after:absolute lg:after:left-0 lg:after:bottom-7 lg:after:w-0 lg:after:h-[1px] lg:after:bg-white lg:hover:after:w-full lg:focus-within:after:w-full lg:last:hidden  lg:px-0 lg:py-0`
+              : ""
+          } ${
+            level == 1 &&
+            currentCategory == category.name &&
+            "lg:font-bold lg:after:w-full"
+          } ${
+            level >= 2
+              ? "top-0 lg:block font-normal px-4 py-3 lg:px-0 lg:py-0"
+              : ""
+          }`}
+        >
+          <Link
+            href={fullPath}
+            className={`block uppercase tracking-[1px] lg:py-1 ${
+              level === 1 ? "lg:text-white " : ""
+            } ${level === 2 ? "lg:font-bold " : ""}${
+              level > 2 ? "lg:normal-case lg:hover:text-gray-700" : ""
+            }`}
+            data-haschildren={"items" in category}
+            data-level={level}
+            onClick={onLinkClick}
           >
-            <Link
-              href={fullPath}
-              className={`
-            block uppercase tracking-[1px] lg:py-1 
-            ${level === 1 ? "lg:text-white ": ""}
-            ${level === 2 ? "lg:font-bold ": ""}
-            ${level > 2 ? "lg:normal-case lg:hover:text-gray-700" : ""}
-            `}
-              data-haschildren={"items" in category}
-              data-level={level}
-              onClick={onLinkClick}
-            >
-              {category.name}
-            </Link>
-            {"items" in category &&
-              (history.includes(category.name) || isDesktop) &&
-              renderSubcategories(category, fullPath, level)}
-          </li>
+            {category.name}
+          </Link>
+          {"items" in category &&
+            (history.includes(category.name) || isDesktop) &&
+            renderSubcategories(category, fullPath, level)}
+        </li>
       );
     });
   }
 
   return (
-    <div className={`fixed ${showNav ? "top-0" : "-top-28"} z-[10] w-full max-h-16 py-4 transition-[top_background-color] ease-in-out duration-300 focus-within:bg-black focus-within:top-0 hover:bg-black hover:top-0 lg:max-h-[5.625rem] lg:h-full ${navTransparent ? "bg-transparent" : "bg-black"}`}>
+    <div
+      className={`fixed ${
+        shouldShowNav ? "top-0" : "-top-28"
+      } z-[10] w-full max-h-16 py-4 transition-[top_background-color] ease-in-out duration-300 focus-within:bg-black focus-within:top-0 hover:bg-black hover:top-0 lg:max-h-[5.625rem] lg:h-full ${
+        isTransparent ? "bg-transparent" : "bg-black"
+      }`}
+    >
       <div className="flex justify-between lg:mb-4  xl:max-w-6xl xl:mx-auto">
         <div className="relative w-[15%]">
           <Button
             className="absolute -top-3 lg:hidden"
             icon
-            onClick={() => setOpen(true)}
+            onClick={openNavbar}
           >
             <Menu size={20} />
           </Button>
@@ -180,7 +173,7 @@ export default function Navbar({}: Props) {
       <div>
         <nav
           className={`${
-            open && !isDesktop ? "fixed top-0 left-0" : "hidden"
+            isOpen && !isDesktop ? "fixed top-0 left-0" : "hidden"
           } w-full h-full bg-white lg:block lg:bg-transparent `}
         >
           <div className="flex justify-center items-center max-h-12 h-full w-full border-b-[1px] border-gray-200 lg:hidden">
@@ -189,10 +182,7 @@ export default function Navbar({}: Props) {
                 icon
                 intent={null}
                 className="absolute left-0 text-black"
-                onClick={() => {
-                  const newHistory = history.slice(0, history.length - 1);
-                  setHistory(newHistory);
-                }}
+                onClick={popHistory}
               >
                 <ArrowLeft size={20} />
               </Button>
@@ -204,10 +194,7 @@ export default function Navbar({}: Props) {
               icon
               intent={null}
               className="absolute right-0 text-black"
-              onClick={() => {
-                setOpen(false);
-                setHistory([]);
-              }}
+              onClick={clearHistory}
             >
               <X size={20} />
             </Button>

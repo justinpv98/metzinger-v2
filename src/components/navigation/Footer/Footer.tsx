@@ -4,7 +4,7 @@ import { Facebook, GitHub, Instagram, MapPin, Twitter } from "react-feather";
 
 // Components
 import { Heading, Link, Text } from "@/components/ui";
-import FooterInput from "./FooterInput";
+import FooterInput from "../Navbar/FooterInput";
 
 type Props = {};
 
